@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Option } from '@/components/ui/dropdown';
 
 const Topics: Option[] = [
-  { id: 0, name: 'Select...' },
   { id: 1, name: 'People' },
   { id: 2, name: 'Jobs' },
   { id: 3, name: 'SciFi' },
@@ -15,7 +14,6 @@ const Topics: Option[] = [
 ];
 
 const Tones: Option[] = [
-  { id: 0, name: 'Select...' },
   { id: 1, name: 'Witty' },
   { id: 2, name: 'Boring' },
   { id: 3, name: 'Dark' },
@@ -24,7 +22,6 @@ const Tones: Option[] = [
 ];
 
 const Types: Option[] = [
-  { id: 0, name: 'Select...' },
   { id: 1, name: 'Story' },
   { id: 2, name: 'Knock Knock' },
   { id: 3, name: 'Poetic' },
@@ -36,6 +33,10 @@ export default function Chat() {
   const [selectedTopic, setSelectedTopic] = useState(Topics[0]);
   const [selectedTone, setSelectedTone] = useState(Tones[0]);
   const [selectedType, setSelectedType] = useState(Types[0]);
+  const [selectedTemp, setSelectedTemp] = useState(0);
+
+  const convertedTemp = (selectedTemp / 10000).toFixed(1);
+
   const {
     messages,
     input,
@@ -43,7 +44,7 @@ export default function Chat() {
     handleSubmit,
     isLoading,
     append,
-  } = useChat();
+  } = useChat({ body: { temperature: convertedTemp } });
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
@@ -68,7 +69,10 @@ export default function Chat() {
                 className='bg-blue-500 p-2 text-white rounded shadow-xl'
                 disabled={isLoading}
                 onClick={() =>
-                  append({ role: 'user', content: 'Give me a random recipe' })
+                  append({
+                    role: 'user',
+                    content: `Tell me a joke, using a ${selectedType.name} format with a ${selectedTone.name} tone. The joke must be about ${selectedTopic.name}`,
+                  })
                 }
               >
                 Generate a Joke
@@ -95,7 +99,20 @@ export default function Chat() {
                 state={selectedType}
                 setState={setSelectedType}
                 title='joke type'
-                options={Tones}
+                options={Types}
+              />
+            </div>
+            <div className='flex flex-col justify-center py-2 w-[200px] mx-auto'>
+              <div className='text-sm font-medium leading-6 text-white-900 text-center'>
+                Temperature: {convertedTemp}
+              </div>
+              <input
+                type='range'
+                min='0'
+                max='200'
+                value={selectedTemp / 100}
+                onChange={(e) => setSelectedTemp(parseFloat(e.target.value) * 100)}
+                className='range range-info'
               />
             </div>
             {/* <form onSubmit={handleSubmit} className='flex justify-center'>
@@ -117,11 +134,15 @@ export default function Chat() {
                 key={m.id}
                 className={`whitespace-pre-wrap ${
                   m.role === 'user'
-                    ? 'bg-green-700 p-3 m-2 rounded-lg'
+                    ? 'bg-blue-500 p-3 m-2 rounded-lg'
                     : 'bg-slate-700 p-3 m-2 rounded-lg'
                 }`}
               >
-                {m.role === 'user' ? 'User: ' : 'AI: '}
+                {m.role === 'user' ? (
+                  <span className='text-yellow-400'>Me: </span>
+                ) : (
+                  <span className='text-red-400'>Joker GPT: </span>
+                )}
                 {m.content}
               </div>
             ))}
