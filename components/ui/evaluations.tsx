@@ -46,24 +46,35 @@ export default function Evaluations({ content }: EvaluationsProps) {
 
   return (
     <>
-      <h1 className='text-center'>Ratings: </h1>
-      {isLoading ?? (
-        <span className='loading loading-spinner loading-xs'></span>
-      )}
+      <div className='flex mx-auto'>
+        <h1 className='text-center'>Ratings: </h1>
+      </div>
       <div className='stats shadow my-2'>
         <div className='stat place-items-center'>
           <div className='stat-title'>Funny</div>
-          <div className='stat-value'>{ratings.funny}</div>
+          {isLoading ? (
+            <span className='loading loading-spinner loading-md'></span>
+          ) : (
+            <div className='stat-value'>{ratings.funny}</div>
+          )}
         </div>
 
         <div className='stat place-items-center'>
           <div className='stat-title'>Dark</div>
-          <div className='stat-value text-secondary'>{ratings.dark}</div>
+          {isLoading ? (
+            <span className='loading loading-spinner loading-md'></span>
+          ) : (
+            <div className='stat-value text-secondary'>{ratings.dark}</div>
+          )}
         </div>
 
         <div className='stat place-items-center'>
           <div className='stat-title'>Appropriate</div>
-          <div className='stat-value'>{ratings.appropriate}</div>
+          {isLoading ? (
+            <span className='loading loading-spinner loading-md'></span>
+          ) : (
+            <div className='stat-value'>{ratings.appropriate}</div>
+          )}
         </div>
       </div>
       <div className='flex flex-col justify-center mb-2 items-center p-4'>

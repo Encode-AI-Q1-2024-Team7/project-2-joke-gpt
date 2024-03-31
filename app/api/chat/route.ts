@@ -9,11 +9,9 @@ const openai = new OpenAI({
 // IMPORTANT! Set the runtime to edge
 export const runtime = 'edge';
 
+// Route that handles a request to receive a joke from the AI with various parameters set by the user
 export async function POST(req: Request) {
   const { messages, temperature } = await req.json();
-
-  console.log("messages: ");
-  console.log(messages);
 
   // Ask OpenAI for a streaming chat completion given the prompt
   const response = await openai.chat.completions.create({
@@ -23,7 +21,7 @@ export async function POST(req: Request) {
       {
         role: 'system',
         content:
-          'You are a professional comedian. You receive requests from the audience to tell a joke. An audience member will provide you the topic, tone, and type of delivery format. You must take into account the audience member’s request and deliver a joke that meets their criteria.',
+          "You are a professional comedian. You receive requests from the audience to tell a joke. An audience member will provide you the topic, tone, and type of delivery format. You must take into account the audience member's request and deliver a joke that meets their criteria.",
       },
       ...messages,
     ],
