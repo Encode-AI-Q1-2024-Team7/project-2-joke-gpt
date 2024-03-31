@@ -6,8 +6,8 @@ import ChatSection from '@/components/chat/ChatSection';
 import ChatSettings from '@/components/chat/ChatSettings';
 
 export default function Home() {
-  const [selectedTemp, setSelectedTemp] = useState(0);
-  const convertedTemp = (selectedTemp / 10000).toFixed(1);
+  const [selectedTemp, setSelectedTemp] = useState(2000); // set default temp to 0.2
+  const convertedTemp = (selectedTemp / 10000).toFixed(1); // scale value to 0.0 - 2.0 to follow GPT-3.5 Turbo guidelines
 
   const {
     messages,

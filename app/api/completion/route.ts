@@ -1,11 +1,9 @@
 import OpenAI from 'openai';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
+import { openai } from '@/app/utils/openai';
 
 export const runtime = 'edge';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
 // Route that handles a request to provide ratings for joke content
 export async function POST(req: Request) {
