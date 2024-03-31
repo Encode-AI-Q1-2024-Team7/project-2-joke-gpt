@@ -4,30 +4,31 @@ import Evaluations from '../ui/evaluations';
 import { ChatRequestOptions, CreateMessage, Message } from 'ai';
 
 const Topics: Option[] = [
-  { id: 1, name: 'People' },
-  { id: 2, name: 'Jobs' },
+  { id: 1, name: 'Jobs' },
+  { id: 2, name: 'People' },
   { id: 3, name: 'SciFi' },
   { id: 4, name: 'Animals' },
   // More topics...
 ];
 
 const Tones: Option[] = [
-  { id: 1, name: 'Witty' },
+  { id: 1, name: 'Rushed' },
   { id: 2, name: 'Boring' },
   { id: 3, name: 'Dark' },
-  { id: 4, name: 'Rushed' },
+  { id: 4, name: 'Witty' },
   // More tones...
 ];
 
 const Types: Option[] = [
-  { id: 1, name: 'Story' },
-  { id: 2, name: 'Knock Knock' },
+  { id: 1, name: 'Knock Knock' },
+  { id: 2, name: 'Story' },
   { id: 3, name: 'Poetic' },
   { id: 4, name: 'Country' },
   // More types...
 ];
 
 interface ChatSettingsProps {
+  content: Message | undefined;
   selectedTemp: number;
   convertedTemp: number;
   isLoading: boolean;
@@ -39,6 +40,7 @@ interface ChatSettingsProps {
 }
 
 export default function ChatSettings({
+  content,
   selectedTemp,
   convertedTemp,
   isLoading,
@@ -52,20 +54,6 @@ export default function ChatSettings({
     <div className='relative min-w-[500px]'>
       <h2 className='text-2xl font-bold text-center mb-4'>GPT Settings</h2>
       <div className='sticky top-36 bg-slate-900 rounded-md mx-3 py-4'>
-        <div className='flex flex-col justify-center mb-2 items-center p-4'>
-          <button
-            className='bg-blue-500 p-2 text-white rounded shadow-xl'
-            disabled={isLoading}
-            onClick={() =>
-              append({
-                role: 'user',
-                content: `Tell me a joke, using a ${selectedType.name} format with a ${selectedTone.name} tone. The joke must be about ${selectedTopic.name}`,
-              })
-            }
-          >
-            Generate a Joke
-          </button>
-        </div>
         <div className='flex justify-center py-2'>
           <DropDownBox
             state={selectedTopic}
@@ -103,18 +91,23 @@ export default function ChatSettings({
             className='range range-info'
           />
         </div>
-        <div className='flex flex-col justify-center py-2 mx-auto px-5'>
-          <Evaluations />
+        <div className='flex flex-col justify-center mb-2 items-center p-4'>
+          <button
+            className='bg-blue-500 p-2 text-white rounded shadow-xl'
+            disabled={isLoading}
+            onClick={() =>
+              append({
+                role: 'user',
+                content: `Tell me a joke, using a ${selectedType.name} format with a ${selectedTone.name} tone. The joke must be about ${selectedTopic.name}`,
+              })
+            }
+          >
+            Generate a Joke
+          </button>
         </div>
-        {/* <form onSubmit={handleSubmit} className='flex justify-center'>
-              <input
-                className='w-[95%] p-2 mb-8 border border-gray-300 rounded shadow-xl text-black'
-                disabled={isLoading}
-                value={input}
-                placeholder='Say something...'
-                onChange={handleInputChange}
-              />
-            </form> */}
+        <div className='flex flex-col justify-center py-2 mx-auto px-5'>
+          <Evaluations content={content} />
+        </div>
       </div>
     </div>
   );
