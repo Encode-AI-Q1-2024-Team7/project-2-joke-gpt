@@ -10,7 +10,7 @@ A Joker GPT program that generates random jokes. Features include:
 
 ### Sample Demo
 
-TODO
+https://github.com/Encode-AI-Q1-2024-Team7/project-2-joke-gpt/assets/105133922/c49848e5-9dd8-4f62-9cc2-02ed5b76a644
 
 ## Instructions
 
