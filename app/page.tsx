@@ -18,12 +18,11 @@ export default function Home() {
     append,
   } = useChat({ api: '/api/chat', body: { temperature: convertedTemp } });
 
-  const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const lastMessageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop =
-        messagesContainerRef.current.scrollHeight;
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
 
@@ -45,7 +44,7 @@ export default function Home() {
         <ChatSection
           messages={messages}
           isLoading={isLoading}
-          messagesContainerRef={messagesContainerRef}
+          lastMessageRef={lastMessageRef}
         />
       </div>
     </main>
